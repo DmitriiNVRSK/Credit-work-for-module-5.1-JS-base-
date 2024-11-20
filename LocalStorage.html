@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сохранение имени</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            margin: 10px 0;
+            width: 200px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #displayName {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Сохраните ваше имя</h1>
+    <input type="text" id="nameInput" placeholder="Введите ваше имя">
+    <button id="saveButton">Сохранить имя</button>
+    <div id="displayName"></div>
+
+    <script>
+        // Проверяем, есть ли сохраненное имя в LocalStorage
+        window.onload = function() {
+            const savedName = localStorage.getItem('userName');
+            if (savedName) {
+                document.getElementById('displayName').innerText = 'Сохраненное имя: ' + savedName;
+            }
+        }
+
+        // Функция для сохранения имени
+        document.getElementById('saveButton').onclick = function() {
+            const name = document.getElementById('nameInput').value;
+            localStorage.setItem('userName', name);
+            document.getElementById('displayName').innerText = 'Сохраненное имя: ' + name;
+            document.getElementById('nameInput').value = ''; // Очищаем поле ввода
+        }
+    </script>
+
+</body>
+</html>

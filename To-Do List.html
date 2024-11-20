@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список задач</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #fff;
+            margin: 5px 0;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Список задач</h1>
+    <input type="text" id="taskInput" placeholder="Введите новую задачу">
+    <button onclick="addTask()">Добавить задачу</button>
+    
+    <div>
+        <button onclick="filterTasks('all')">Показать все</button>
+        <button onclick="filterTasks('completed')">Показать выполненные</button>
+        <button onclick="filterTasks('incomplete')">Показать невыполненные</button>
+    </div>
+    
+    <ul id="taskList"></ul>
+
+    <script>
+        let tasks = [];
+
+        function addTask() {
+            const taskInput = document.getElementById('taskInput');
+            const taskText = taskInput.value.trim();
+            if (taskText) {
+                tasks.push({ text: taskText, completed: false });
+                taskInput.value = '';
+                renderTasks();
+            }
+        }
+
+        function toggleTask(index) {
+            tasks[index].completed = !tasks[index].completed;
+            renderTasks();
+        }
+
+        function deleteTask(index) {
+            tasks.splice(index, 1);
+            renderTasks();
+        }
+
+        function editTask(index) {
+            const newTaskText = prompt('Редактировать задачу:', tasks[index].text);
+            if (newTaskText) {
+                tasks[index].text = newTaskText;
+                renderTasks();
+            }
+        }
+
+        function filterTasks(status) {
+            renderTasks(status);
+        }
+
+        function renderTasks(filter = 'all') {
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = '';
+            tasks.forEach((task, index) => {
+                if (filter === 'all' || (filter === 'completed' && task.completed) || (filter === 'incomplete' && !task.completed)) {
+                    const li = document.createElement('li');
+                    li.className = task.completed ? 'completed' : '';
+                    li.innerHTML = `
+                        <span onclick="toggleTask(${index})">${task.text}</span>
+                        <div>
+                            <button onclick="editTask(${index})">Редактировать</button>
+                            <button onclick="deleteTask(${index})">Удалить</button>
+                        </div>
+                    `;
+                    taskList.appendChild(li);
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
